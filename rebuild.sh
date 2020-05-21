@@ -41,7 +41,7 @@ fi
 # Missing fields in bodies:
 # "discovery","parents","belts"
 if [ ! -f ./bodies.csv ]; then
-	wget -O - -S --header="accept-encoding: gzip" https://www.edsm.net/dump/bodies.json | gzip -dc | json2csv/bin/json2csv.js -f "id","bodyId","name","type","subType","offset","distanceToArrival","isMainStar","isScoopable","age","spectralClass","luminosity","absoluteMagnitude","solarMasses","solarRadius","surfaceTemperature","orbitalPeriod","semiMajorAxis","orbitalEccentricity","orbitalInclination","argOfPeriapsis","rotationalPeriod","rotationalPeriodTidallyLocked","axialTilt","updateTime","systemId" | tail -n +2 | split -d -l 10000000 - bodies.csv
+	wget -O - -S --header="accept-encoding: gzip" https://eddb.io/archive/v6/bodies_recently.jsonl | gzip -dc | json2csv/bin/json2csv.js -f "id","bodyId","name","type","subType","offset","distanceToArrival","isMainStar","isScoopable","age","spectralClass","luminosity","absoluteMagnitude","solarMasses","solarRadius","surfaceTemperature","orbitalPeriod","semiMajorAxis","orbitalEccentricity","orbitalInclination","argOfPeriapsis","rotationalPeriod","rotationalPeriodTidallyLocked","axialTilt","updateTime","systemId" | tail -n +2 | split -d -l 10000000 - bodies.csv
 	touch bodies.csv
 fi
 echo "Loading data into MySQL"
