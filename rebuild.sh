@@ -49,13 +49,20 @@ if [ ! -f ${DATADIR}/bodies.csv ]; then
 fi
 echo "Loading data into MySQL"
 # Import table loads
+echo "Loading systems"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost $mysqldb ${DATADIR}/systems_import.csv*
+echo "Loading stations"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost $mysqldb ${DATADIR}/stations_import.csv
 # Direct table loads
+echo "Loading factions"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost -c eddb_id,name,updated_at,government_id,government,allegiance_id,home_system_id,is_player_faction $mysqldb ${DATADIR}/factions.csv
+echo "Loading listings"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost -c eddb_id,station_id,commodity_id,supply,supply_bracket,buy_price,sell_price,demand,demand_bracket,collected_at $mysqldb ${DATADIR}/listings.csv
+echo "Loading commodities"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost -c eddb_id,name,category_id,average_price,is_rare,max_buy_price,max_sell_price,min_buy_price,min_sell_price,buy_price_lower_average,sell_price_upper_average,is_non_marketable,ed_id $mysqldb ${DATADIR}/commodities.csv
+echo "Loading modules"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost -c eddb_id,group_id,class,rating,price,weapon_mode,missile_type,name,belongs_to,ed_id,ed_symbol,ship $mysqldb ${DATADIR}/modules.csv
+echo "Loading bodies"
 mysqlimport --local --fields-terminated-by=',' --lines-terminated-by='\n' --ignore -u $mysqluser -p$mysqlpass -h $mysqlhost -c eddb_id,bodyId,name,type,subType,offset,distanceToArrival,isMainStar,isScoopable,age,spectralClass,luminosity,absoluteMagnitude,solarMasses,solarRadius,surfaceTemperature,orbitalPeriod,semiMajorAxis,orbitalEccentricity,orbitalInclination,argOfPeriapsis,rotationalPeriod,rotationalPeriodTidallyLocked,axialTilt,updateTime,systemId $mysqldb ${DATADIR}/bodies.csv*
 echo "Building extra tables and cleaning up"
 mysql -u $mysqluser -p$mysqlpass -h $mysqlhost -D $mysqldb < rebuild.sql
